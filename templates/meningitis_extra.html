@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}NeuroStack - Meningitis{% endblock %}
+
+{% block content %}
+
+<div class="card">
+
+    <!-- HEADER -->
+    <div class="form-header">
+        <h2>Meningitis Risk Prediction</h2>
+        <p class="subtitle">
+            Enter patient details to assess meningitis risk
+        </p>
+        {% if confidence %}
+    <div class="confidence-box">
+
+        <span class="confidence-label">Confidence</span>
+
+        <div class="confidence-value">
+            {{ confidence }}%
+        </div>
+
+        <div class="confidence-bar">
+            <div class="confidence-fill" style="width: {{ confidence }}%;"></div>
+        </div>
+
+    </div>
+    {% endif %}
+    </div>
+
+    <form action="/predict_meningitis" method="POST">
+
+        <div class="form-grid">
+
+            <!-- Age -->
+            <div class="form-group">
+                <label class="form-label">Age</label>
+                <input type="number" name="Age" class="form-input" required>
+            </div>
+
+            <!-- Gender -->
+            <div class="form-group">
+                <label class="form-label">Gender</label>
+                <select name="Gender" class="form-select" required>
+                    <option value="" disabled selected>Select gender</option>
+                    <option value="0">Male</option>
+                    <option value="1">Female</option>
+                </select>
+            </div>
+
+            <!-- WBC Count -->
+            <div class="form-group">
+                <label class="form-label">WBC Count</label>
+                <input type="number" name="WBC_Count" class="form-input" required>
+            </div>
+
+            <!-- Protein Level -->
+            <div class="form-group">
+                <label class="form-label">Protein Level</label>
+                <input type="number" name="Protein_Level" class="form-input" required>
+            </div>
+
+            <!-- Glucose Level -->
+            <div class="form-group">
+                <label class="form-label">Glucose Level</label>
+                <input type="number" name="Glucose_Level" class="form-input" required>
+            </div>
+
+            <!-- Pathogen -->
+            <div class="form-group">
+                <label class="form-label">Pathogen Present</label>
+                <select name="Pathogen_Present" class="form-select" required>
+                    <option value="" disabled selected>Select option</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+
+            <!-- Diagnosis -->
+            <div class="form-group">
+                <label class="form-label">Diagnosis Type</label>
+                <select name="Diagnosis" class="form-select" required>
+                    <option value="" disabled selected>Select diagnosis</option>
+                    <option value="1">Bacterial</option>
+                    <option value="2">Viral</option>
+                    <option value="3">Unknown</option>
+                </select>
+            </div>
+
+            <!-- Hemoglobin -->
+            <div class="form-group">
+                <label class="form-label">Hemoglobin</label>
+                <input type="number" name="Hemoglobin" class="form-input" required>
+            </div>
+
+            
+            <!-- Platelets -->
+            <div class="form-group">
+                <label class="form-label">Platelets</label>
+                <input type="number" name="Platelets" class="form-input" required>
+            </div>
+
+            <!-- CRP -->
+            <div class="form-group">
+                <label class="form-label">CRP Level</label>
+                <input type="number" name="CRP_Level" class="form-input" required>
+            </div>
+
+        </div>
+
+        <button type="submit">Predict Risk</button>
+
+    </form>
+
+</div>
+
+{% endblock %}

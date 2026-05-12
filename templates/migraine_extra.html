@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block title %}Migraine Assessment{% endblock %}
+
+{% block content %}
+
+<div class="card">
+
+    <!-- HEADER -->
+   <div class="form-header">
+
+    <h2>Migraine Detailed Assessment</h2>
+
+    <p class="subtitle">
+        Provide detailed symptoms to classify migraine type
+    </p>
+
+    {% if confidence %}
+    <div class="confidence-box">
+
+        <span class="confidence-label">Confidence</span>
+
+        <div class="confidence-value">
+            {{ confidence }}%
+        </div>
+
+        <div class="confidence-bar">
+            <div class="confidence-fill" style="width: {{ confidence }}%;"></div>
+        </div>
+
+    </div>
+    {% endif %}
+
+</div>
+    {% if error %}
+    <div class="alert">{{ error }}</div>
+    {% endif %}
+
+    <form action="/predict_migraine_type" method="POST">
+
+        <div class="form-grid">
+
+        {% for feature in migraine_features %}
+
+            <div class="form-group">
+
+                <!-- LABEL -->
+                <label class="form-label">
+
+                {% if feature == "Age" %}
+                    Age of the patient
+
+                {% elif feature == "Duration" %}
+                    Duration of headache (hours)
+
+                {% elif feature == "Frequency" %}
+                    Headache frequency (per month)
+
+                {% elif feature == "Location" %}
+                    Headache location
+
+                {% elif feature == "Character" %}
+                    Type of headache pain
+
+                {% elif feature == "Intensity" %}
+                    Pain intensity (1–10)
+
+                {% elif feature == "Vomit" %}
+                    Vomiting
+
+                {% elif feature == "Nausea" %}
+                    Nausea
+
+                {% elif feature == "Phonophobia" %}
+                    Sensitivity to sound
+
+                {% elif feature == "Photophobia" %}
+                    Sensitivity to light
+
+                {% elif feature == "Visual" %}
+                    Visual disturbance
+
+                {% elif feature == "Sensory" %}
+                    Sensory disturbance
+
+                {% elif feature == "Dysphasia" %}
+                    Speech difficulty
+
+                {% elif feature == "Dysarthria" %}
+                    Slurred speech
+
+                {% elif feature == "Vertigo" %}
+                    Dizziness / vertigo
+
+                {% elif feature == "Tinnitus" %}
+                    Ringing in ears
+
+                {% elif feature == "Hypoacusis" %}
+                    Reduced hearing
+
+                {% elif feature == "Defect" %}
+                    Visual defect
+
+                {% elif feature == "Paresthesia" %}
+                    Tingling / numbness
+
+                {% elif feature == "DPF" %}
+                    Migraine risk score (DPF)
+
+                {% else %}
+                    {{ feature.replace('_',' ').title() }}
+                {% endif %}
+
+                </label>
+
+
+                <!-- INPUT TYPES -->
+
+                {% if feature == "Location" %}
+
+                <select name="Location" class="form-select" required>
+                    <option value="" disabled selected>Select location</option>
+                    <option value="1">Unilateral (one side)</option>
+                    <option value="2">Bilateral (both sides)</option>
+                    <option value="0">Whole head</option>
+                </select>
+
+                {% elif feature == "Character" %}
+
+                <select name="Character" class="form-select" required>
+                    <option value="" disabled selected>Select type</option>
+                    <option value="1">Throbbing</option>
+                    <option value="2">Pressing</option>
+                    <option value="3">Stabbing</option>
+                    <option value="4">Dull aching</option>
+                </select>
+
+                {% elif feature in [
+                'Vomit','Nausea','Phonophobia','Photophobia',
+                'Visual','Sensory','Dysphasia','Dysarthria',
+                'Vertigo','Tinnitus','Hypoacusis','Defect','Paresthesia','Diplopia','Conscience'
+                ] %}
+
+                <select name="{{ feature }}" class="form-select" required>
+                    <option value="" disabled selected>Select option</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+
+                {% else %}
+
+                <input 
+                    type="number" 
+                    step="any" 
+                    name="{{ feature }}" 
+                    class="form-input"
+                    placeholder="Enter value" 
+                    required
+                >
+
+                {% endif %}
+
+            </div>
+
+        {% endfor %}
+
+        </div>
+
+        <button type="submit">Predict Migraine Type</button>
+
+    </form>
+
+</div>
+
+{% endblock %}

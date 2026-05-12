@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{% block title %}Disease Prediction{% endblock %}</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+
+<style>
+
+/* ===== GLOBAL ===== */
+body{
+    font-family: 'Inter', sans-serif;
+    margin:0;
+    background: radial-gradient(circle at 20% 20%, #312e81, #0f172a 70%);
+    color:#1f2937;
+}
+
+/* ===== NAVBAR ===== */
+.navbar{
+    background: rgba(15,23,42,0.8);
+    backdrop-filter: blur(14px);
+    padding:18px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
+    z-index:100;
+    border-bottom:1px solid rgba(255,255,255,0.05);
+}
+
+.navbar h1{
+    margin:0;
+    font-size:20px;
+    font-weight:600;
+    color:#c7d2fe;
+    letter-spacing:0.4px;
+}
+
+.nav-links a{
+    color:#cbd5f5;
+    text-decoration:none;
+    margin-left:24px;
+    font-size:14px;
+    position:relative;
+    transition:0.3s;
+}
+
+/* underline animation */
+.nav-links a::after{
+    content:'';
+    position:absolute;
+    width:0%;
+    height:2px;
+    left:0;
+    bottom:-5px;
+    background:#818cf8;
+    transition:0.3s;
+}
+
+.nav-links a:hover{
+    color:white;
+}
+
+.nav-links a:hover::after{
+    width:100%;
+}
+
+/* ===== MAIN ===== */
+.main{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:calc(100vh - 70px);
+    position:relative;
+}
+
+/* ===== BACKGROUND GLOW ===== */
+.main::before{
+    content:'';
+    position:absolute;
+    width:600px;
+    height:600px;
+    background: radial-gradient(circle, rgba(99,102,241,0.25), transparent 70%);
+    filter: blur(100px);
+    z-index:0;
+}
+
+/* ===== CONTAINER ===== */
+.container{
+    width:100%;
+    max-width:1000px;
+    padding:20px;
+    position:relative;
+    z-index:1;
+}
+
+/* ===== CARD ===== */
+.card{
+    background: rgba(255,255,255,0.97);
+    padding:45px;
+    border-radius:22px;
+    box-shadow:0 30px 80px rgba(0,0,0,0.5);
+    border:1px solid rgba(255,255,255,0.4);
+    transition:0.35s ease;
+}
+
+.card:hover{
+    transform: translateY(-6px);
+}
+
+/* ===== TITLE ===== */
+h2{
+    text-align:center;
+    margin-bottom:35px;
+    font-weight:600;
+    font-size:26px;
+    color:#4f46e5;
+    letter-spacing:0.5px;
+}
+
+/* ===== FORM GRID ===== */
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:28px;
+}
+
+/* ===== FORM GROUP ===== */
+.form-group{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+/* ===== LABEL ===== */
+.form-label{
+    font-size:16px;
+    font-weight:500;
+    color:#475569;
+}
+
+/* ===== INPUT ===== */
+.form-select{
+    width:100%;
+    padding:14px;
+    border-radius:12px;
+    border:1px solid #e2e8f0;
+    background:#f8fafc;
+    font-size:14px;
+    transition:0.25s;
+    box-shadow:0 2px 6px rgba(0,0,0,0.05);
+}
+
+/* hover */
+.form-select:hover{
+    background:white;
+    border-color:#c7d2fe;
+}
+
+/* focus */
+.form-select:focus{
+    outline:none;
+    border-color:#6366f1;
+    box-shadow:0 0 0 3px rgba(99,102,241,0.25);
+    background:white;
+    transform: scale(1.01);
+}
+
+/* ===== BUTTON ===== */
+button{
+    width:100%;
+    margin-top:35px;
+    padding:16px;
+    border:none;
+    border-radius:14px;
+    background: linear-gradient(135deg,#6366f1,#8b5cf6);
+    color:white;
+    font-size:15px;
+    font-weight:500;
+    cursor:pointer;
+    transition:0.3s ease;
+}
+
+/* hover */
+button:hover{
+    transform: translateY(-2px) scale(1.02);
+    box-shadow:0 15px 35px rgba(99,102,241,0.45);
+}
+
+/* click feel */
+button:active{
+    transform: scale(0.98);
+}
+
+/* ===== ALERT ===== */
+.alert{
+    background:#fee2e2;
+    color:#991b1b;
+    padding:12px;
+    border-radius:10px;
+    margin-bottom:15px;
+    font-size:14px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:800px){
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .card{
+        padding:30px;
+    }
+}
+
+/* HEADER */
+.form-header{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.subtitle{
+    font-size:14px;
+    color:#64748b;
+    margin-top:5px;
+}
+
+/* LABEL IMPROVEMENT */
+.form-label{
+    font-size:14px;
+    font-weight:600;
+    color:#334155;
+}
+
+/* BETTER BUTTON TEXT STYLE */
+button{
+    letter-spacing:0.3px;
+}
+
+/* OPTIONAL: nicer dropdown text */
+.form-select{
+    font-weight:500;
+    cursor: pointer;
+}
+.form-input{
+    width:95%;
+    padding:14px;
+    border-radius:12px;
+    border:1px solid #5153c4;
+    background:#f8fafc;
+    font-size:14px;
+    transition:0.25s;
+    box-shadow:0 2px 6px rgba(0,0,0,0.05);
+}
+
+.form-input:hover{
+    background:white;
+    border-color:#c7d2fe;
+}
+
+.form-input:focus{
+    outline:none;
+    border-color:#6366f1;
+    box-shadow:0 0 0 3px rgba(99,102,241,0.25);
+    background:white;
+}
+/* RESULT CARD */
+.result-card{
+    text-align:center;
+}
+
+/* RESULT BOX */
+.result-box{
+    background: rgba(99,102,241,0.08);
+    border-radius:16px;
+    padding:25px;
+    margin-top:10px;
+    margin-bottom:25px;
+}
+
+.result-label{
+    font-size:13px;
+    color:#64748b;
+}
+
+.result-value{
+    font-size:26px;
+    font-weight:600;
+    color:#4f46e5;
+    margin-top:5px;
+}
+
+/* CONFIDENCE */
+.confidence-section{
+    margin-top:10px;
+}
+
+.confidence-text{
+    margin-bottom:8px;
+    font-size:14px;
+    color:#334155;
+}
+
+/* PROGRESS BAR */
+.progress-bar{
+    width:100%;
+    height:10px;
+    background:#e5e7eb;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.progress-fill{
+    height:100%;
+    background: linear-gradient(135deg,#6366f1,#8b5cf6);
+    border-radius:10px;
+    transition:0.5s ease;
+}
+
+/* BUTTON */
+.result-actions{
+    margin-top:25px;
+}
+
+.back-btn{
+    text-decoration:none;
+    padding:12px 20px;
+    border-radius:10px;
+    background:#111827;
+    color:white;
+    font-size:14px;
+    transition:0.3s;
+}
+
+.back-btn:hover{
+    background:#374151;
+}
+/* CONFIDENCE BOX */
+.confidence-box{
+    margin-top:20px;
+    padding:18px;
+    border-radius:14px;
+    background: rgba(99,102,241,0.08);
+    text-align:center;
+}
+
+/* LABEL */
+.confidence-label{
+    font-size:13px;
+    color:#64748b;
+}
+
+/* VALUE */
+.confidence-value{
+    font-size:26px;
+    font-weight:600;
+    color:#4f46e5;
+    margin:5px 0;
+}
+
+/* BAR */
+.confidence-bar{
+    width:100%;
+    height:8px;
+    background:#e5e7eb;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+/* FILL */
+.confidence-fill{
+    height:100%;
+    background: linear-gradient(135deg,#6366f1,#8b5cf6);
+    border-radius:10px;
+    transition:0.4s ease;
+}
+</style>
+
+</head>
+
+<body>
+
+{% include "navbar.html" %}
+
+<div class="main">
+    <div class="container">
+
+        {% block content %}{% endblock %}
+
+    </div>
+</div>
+
+</body>
+</html>

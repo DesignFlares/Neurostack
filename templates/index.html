@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}NeuroStack-Home{% endblock %}
+
+{% block content %}
+
+<div class="card">
+
+    <!-- HEADER -->
+    <div class="form-header">
+        <h2>Neurological Disease Prediction</h2>
+        <p class="subtitle">
+            Select symptoms below to get an AI-based prediction
+        </p>
+    </div>
+
+    {% if error %}
+    <div class="alert">{{ error }}</div>
+    {% endif %}
+
+    <form action="/predict" method="POST">
+
+        <div class="form-grid">
+
+            {% for feature in features %}
+            <div class="form-group">
+
+                <!-- CLEAN LABEL -->
+                <label class="form-label">
+                    {{ feature.replace('_',' ').title() }}
+                </label>
+
+                <!-- INPUT -->
+                <select name="{{ feature }}" class="form-select" required>
+                    <option value="" disabled selected>Select option</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+
+            </div>
+            {% endfor %}
+
+        </div>
+
+        <!-- BUTTON -->
+        <button type="submit">
+            Predict Disease
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

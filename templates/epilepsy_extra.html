@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Epilepsy Prediction{% endblock %}
+
+{% block content %}
+
+<div class="card">
+
+    <!-- HEADER -->
+    <div class="form-header">
+        <h2>Epilepsy Risk Assessment</h2>
+        <p class="subtitle">
+            Enter clinical details to assess epilepsy risk
+        </p>
+        {% if confidence %}
+    <div class="confidence-box">
+
+        <span class="confidence-label">Confidence</span>
+
+        <div class="confidence-value">
+            {{ confidence }}%
+        </div>
+
+        <div class="confidence-bar">
+            <div class="confidence-fill" style="width: {{ confidence }}%;"></div>
+        </div>
+
+    </div>
+    {% endif %}
+    </div>
+
+    <form action="/predict_epilepsy" method="POST">
+
+        <div class="form-grid">
+
+            <!-- Age -->
+            <div class="form-group">
+                <label class="form-label">Age of the patient</label>
+                <input type="number" name="age" class="form-input" required>
+            </div>
+
+            <!-- Frequency -->
+            <div class="form-group">
+                <label class="form-label">Seizure frequency (per month)</label>
+                <input type="number" name="seizure_frequency" class="form-input" required>
+            </div>
+
+            <!-- Duration -->
+            <div class="form-group">
+                <label class="form-label">Seizure duration (seconds)</label>
+                <input type="number" name="seizure_duration" class="form-input" required>
+            </div>
+
+            <!-- EEG -->
+            <div class="form-group">
+                <label class="form-label">EEG abnormality detected</label>
+                <select name="eeg_abnormality_detected" class="form-select" required>
+                    <option value="" disabled selected>Select option</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+
+            <!-- Family History -->
+            <div class="form-group">
+                <label class="form-label">Family history of epilepsy</label>
+                <select name="family_history_of_epilepsy" class="form-select" required>
+                    <option value="" disabled selected>Select option</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+
+            <!-- LOC -->
+            <div class="form-group">
+                <label class="form-label">Loss of consciousness</label>
+                <select name="loss_of_consciousness" class="form-select" required>
+                    <option value="" disabled selected>Select option</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+
+            <!-- Muscle -->
+            <div class="form-group">
+                <label class="form-label">Muscle stiffness</label>
+                <select name="muscle_stiffness" class="form-select" required>
+                    <option value="" disabled selected>Select option</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+
+        </div>
+
+        <button type="submit">Predict Epilepsy Type</button>
+
+    </form>
+
+</div>
+
+{% endblock %}

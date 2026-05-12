@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block title %}Multiple Sclerosis{% endblock %}
+
+{% block content %}
+
+<div class="card">
+
+    <!-- HEADER -->
+    <div class="form-header">
+        <h2>Multiple Sclerosis Risk Assessment</h2>
+        <p class="subtitle">
+            Provide clinical details to assess MS conversion risk
+        </p>
+        {% if confidence %}
+    <div class="confidence-box">
+
+        <span class="confidence-label">Confidence</span>
+
+        <div class="confidence-value">
+            {{ confidence }}%
+        </div>
+
+        <div class="confidence-bar">
+            <div class="confidence-fill" style="width: {{ confidence }}%;"></div>
+        </div>
+
+    </div>
+    {% endif %}
+    </div>
+
+    <form action="/predict_ms" method="POST">
+
+        <div class="form-grid">
+
+        {% for feature in ms_features %}
+
+            <div class="form-group">
+
+                <!-- LABEL -->
+                <label class="form-label">
+
+                {% if feature == "Gender" %}
+                    Gender
+
+                {% elif feature == "Age" %}
+                    Age of the patient
+
+                {% elif feature == "Schooling" %}
+                    Years of education
+
+                {% elif feature == "Varicella" %}
+                    History of chickenpox
+
+                {% elif feature == "Initial_Symptom" %}
+                    Initial neurological symptom
+
+                {% elif feature == "Mono_or_Polysymptomatic" %}
+                    Symptom presentation type
+
+                {% elif feature == "Oligoclonal_Bands" %}
+                    Oligoclonal bands in CSF
+
+                {% elif feature == "ULSSEP" %}
+                    Upper limb SSEPs
+
+                {% elif feature == "VEP" %}
+                    Visual evoked potentials
+
+                {% elif feature == "Periventricular_MRI" %}
+                    Periventricular MRI lesions
+
+                {% elif feature == "Cortical_MRI" %}
+                    Cortical MRI lesions
+
+                {% elif feature == "Infratentorial_MRI" %}
+                    Infratentorial MRI lesions
+
+                {% elif feature == "Spinal_Cord_MRI" %}
+                    Spinal cord MRI lesions
+
+                {% elif feature == "Initial_EDSS" %}
+                    Initial disability score (EDSS)
+
+                {% else %}
+                    {{ feature.replace("_"," ").title() }}
+
+                {% endif %}
+
+                </label>
+
+
+                <!-- INPUT TYPES -->
+
+                <!-- Gender -->
+                {% if feature == "Gender" %}
+
+                <select name="Gender" class="form-select" required>
+                    <option value="" disabled selected>Select gender</option>
+                    <option value="1">Male</option>
+                    <option value="0">Female</option>
+                </select>
+
+
+                <!-- Mono/Poly -->
+                {% elif feature == "Mono_or_Polysymptomatic" %}
+
+                <select name="Mono_or_Polysymptomatic" class="form-select" required>
+                    <option value="" disabled selected>Select type</option>
+                    <option value="1">Monosymptomatic</option>
+                    <option value="2">Polysymptomatic</option>
+                    <option value="3">Other</option>
+                </select>
+
+
+                <!-- Oligoclonal -->
+                {% elif feature == "Oligoclonal_Bands" %}
+
+                <select name="Oligoclonal_Bands" class="form-select" required>
+                    <option value="" disabled selected>Select result</option>
+                    <option value="0">Negative</option>
+                    <option value="1">Positive</option>
+                    <option value="2">Strong Positive</option>
+                </select>
+
+
+                <!-- Binary -->
+                {% elif feature in [
+                "Varicella",
+                "ULSSEP",
+                "VEP",
+                "Periventricular_MRI",
+                "Cortical_MRI",
+                "Infratentorial_MRI",
+                "Spinal_Cord_MRI"
+                ] %}
+
+                <select name="{{ feature }}" class="form-select" required>
+                    <option value="" disabled selected>Select option</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+
+
+                <!-- Numeric -->
+                {% else %}
+
+                <input 
+                    type="number" 
+                    step="any" 
+                    name="{{ feature }}" 
+                    class="form-input"
+                    placeholder="Enter value" 
+                    required
+                >
+
+                {% endif %}
+
+            </div>
+
+        {% endfor %}
+
+        </div>
+
+        <button type="submit">Predict MS Conversion</button>
+
+    </form>
+
+</div>
+
+{% endblock %}

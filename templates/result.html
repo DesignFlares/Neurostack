@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Prediction Result{% endblock %}
+
+{% block content %}
+
+<div class="card result-card">
+
+    <!-- HEADER -->
+    <div class="form-header">
+        <h2>Prediction Result</h2>
+        <p class="subtitle">
+            Based on the provided inputs
+        </p>
+    </div>
+
+    <!-- RESULT -->
+    <div class="result-box">
+        <span class="result-label">Prediction</span>
+        <h3 class="result-value">{{ prediction }}</h3>
+    </div>
+
+    {% if confidence %}
+    <!-- CONFIDENCE -->
+    <div class="confidence-section">
+        <div class="confidence-text">
+            Confidence: <strong>{{ confidence }}%</strong>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" style="width:{{ confidence }}%;"></div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- BUTTON -->
+    <div class="result-actions">
+        <a href="/" class="back-btn">← Go Back</a>
+    </div>
+
+</div>
+
+{% endblock %}
